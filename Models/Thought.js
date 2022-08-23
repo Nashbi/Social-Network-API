@@ -15,14 +15,28 @@ const thoughtsSchema = new Schema (
     createdAt: {
         type: Date,
       default: () => Date(),
-    }
-}
+    },
+
+    username: {
+        type: string,
+        required: true,
+    },
+    
+    reactions: [reactionSchema],
+
+},
+{
+    toJSON: {
+        virtuals: true,
+        getters: true
+    }, 
+},
 );
 
-UserSchema.virtual('friendCount').get(function () {
-    return this.friends.length;
+thoughtsSchema.virtual('reactionCount').get(function () {
+    return this.reactions.length;
 });
 
-const User = model('Thought', UserSchema);
+const Thought = model('thought', ThoughtSchema);
 
-module.exports = User;
+module.exports = Thought;
