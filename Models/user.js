@@ -6,14 +6,14 @@ const userSchema = new Schema (
 
   {
     username:{ 
-    type: string,
+    type: String,
     unique: true,
     required: true,
-    trimmed: true,
+    trim: true,
     },
 
     email: {
-        type: string,
+        type: String,
         required: true,
         unique: true, 
         match: [-/^([a-z0-9_.-]+)@([\da-z.-]+).([a-z.]{2,6})$/]
@@ -21,26 +21,27 @@ const userSchema = new Schema (
 
     thoughts: [ {
         type: Schema.Types.ObjectId,
-        ref: "Thought",
+        ref: "thought",
   }],
 
     friends: [ {
         type: Schema.Types.ObjectId,
-        ref: "User",
+        ref: "user",
     }],
 },
 {
     toJSON: {
         virtuals: true,
-        getters: true
     }, 
+    id: false,
+
 }
 );
 
-UserSchema.virtual('friendCount').get(function () {
+userSchema.virtual('friendCount').get(function () {
     return this.friends.length;
 });
 
-const User = model('user', userSchema);
+const User = mongoose.model('user', userSchema);
 
 module.exports = User;
